@@ -27,6 +27,7 @@ pip install dist/autoimagemorphGPT-1.0.0.tar.gz
 ```
 
 ## Project Structure
+(just run `tree`)
 
 ```
 ├── LICENSE
