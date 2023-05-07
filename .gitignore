@@ -1,1 +1,4 @@
-images/*
+build
+dist
+mypackage.egg-info
+autoimagemorphGPT/images/*
