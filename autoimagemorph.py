@@ -55,24 +55,24 @@ import numpy as np
 image_dir = "/Users/ishandutta2007/Documents/Projects/autoimagemorphGPT/images"
 
 
-def loadTriangles(limg, rimg, featuregridsize, showfeatures) -> tuple:
-    leftTriList = []
-    rightTriList = []
+def load_triangles(limg, rimg, feature_grid_size, show_features) -> tuple:
+    left_tri_list = []
+    right_tri_list = []
 
-    lrlists = autofeaturepoints(limg, rimg, featuregridsize, showfeatures)
+    lr_lists = autofeaturepoints(limg, rimg, feature_grid_size, show_features)
 
-    leftArray = np.array(lrlists[0], np.float64)
-    rightArray = np.array(lrlists[1], np.float64)
-    delaunayTri = Delaunay(leftArray)
+    left_array = np.array(lr_lists[0], np.float64)
+    right_array = np.array(lr_lists[1], np.float64)
+    delaunay_tri = Delaunay(left_array)
 
-    leftNP = leftArray[delaunayTri.simplices]
-    rightNP = rightArray[delaunayTri.simplices]
+    left_np = left_array[delaunay_tri.simplices]
+    right_np = right_array[delaunay_tri.simplices]
 
-    for x, y in zip(leftNP, rightNP):
-        leftTriList.append(Triangle(x))
-        rightTriList.append(Triangle(y))
+    for x, y in zip(left_np, right_np):
+        left_tri_list.append(Triangle(x))
+        right_tri_list.append(Triangle(y))
 
-    return leftTriList, rightTriList
+    return left_tri_list, right_tri_list
 
 
 class Triangle:
@@ -350,8 +350,8 @@ def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures,
     leftImageARR = np.asarray(leftImageRaw)
     rightImageARR = np.asarray(rightImageRaw)
 
-    # autofeaturepoints() is called in loadTriangles()
-    triangleTuple = loadTriangles(
+    # autofeaturepoints() is called in load_triangles()
+    triangleTuple = load_triangles(
         leftImageRaw, rightImageRaw, featuregridsize, showfeatures
     )
 
