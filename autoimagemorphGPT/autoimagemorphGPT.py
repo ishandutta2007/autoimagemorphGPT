@@ -35,7 +35,6 @@
 #           numpy.linalg.LinAlgError: Singular matrix
 
 def run_autoimagemorphGPT():
-    print("Yo")
     import cv2, time, argparse, ast
     from scipy.ndimage import median_filter
     from scipy.spatial import Delaunay
