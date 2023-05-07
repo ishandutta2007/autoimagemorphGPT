@@ -142,7 +142,9 @@ class Morpher:
         )  # , kx=2, ky=2)
 
     def get_image_at_alpha(self, alpha, smoothMode):
-        for left_triangle, right_triangle in zip(self.left_triangles, self.right_triangles):
+        for left_triangle, right_triangle in zip(
+            self.left_triangles, self.right_triangles
+        ):
             self.interpolate_points(left_triangle, right_triangle, alpha)
             # print(".", end="") # TODO: this doesn't work as intended
 
@@ -158,12 +160,54 @@ class Morpher:
         target_vertices = target_triangle.vertices.reshape(6, 1)
         temp_left_matrix = np.array(
             [
-                [left_triangle.vertices[0][0], left_triangle.vertices[0][1], 1, 0, 0, 0],
-                [0, 0, 0, left_triangle.vertices[0][0], left_triangle.vertices[0][1], 1],
-                [left_triangle.vertices[1][0], left_triangle.vertices[1][1], 1, 0, 0, 0],
-                [0, 0, 0, left_triangle.vertices[1][0], left_triangle.vertices[1][1], 1],
-                [left_triangle.vertices[2][0], left_triangle.vertices[2][1], 1, 0, 0, 0],
-                [0, 0, 0, left_triangle.vertices[2][0], left_triangle.vertices[2][1], 1],
+                [
+                    left_triangle.vertices[0][0],
+                    left_triangle.vertices[0][1],
+                    1,
+                    0,
+                    0,
+                    0,
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    left_triangle.vertices[0][0],
+                    left_triangle.vertices[0][1],
+                    1,
+                ],
+                [
+                    left_triangle.vertices[1][0],
+                    left_triangle.vertices[1][1],
+                    1,
+                    0,
+                    0,
+                    0,
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    left_triangle.vertices[1][0],
+                    left_triangle.vertices[1][1],
+                    1,
+                ],
+                [
+                    left_triangle.vertices[2][0],
+                    left_triangle.vertices[2][1],
+                    1,
+                    0,
+                    0,
+                    0,
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    left_triangle.vertices[2][0],
+                    left_triangle.vertices[2][1],
+                    1,
+                ],
             ]
         )
         temp_right_matrix = np.array(
@@ -246,10 +290,9 @@ class Morpher:
             target_points, left_source_points, right_source_points
         ):  # TODO: ~ 53% of runtime
             self.left_image[int(x[1])][int(x[0])] = self.left_interpolation(y[1], y[0])
-            self.right_image[int(x[1])][int(x[0])] = self.right_interpolation(z[1], z[0])
-
-
-########################################################################################################
+            self.right_image[int(x[1])][int(x[0])] = self.right_interpolation(
+                z[1], z[0]
+            )
 
 
 # Automatic feature points
@@ -318,7 +361,10 @@ def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures,
     if scale != 1.0:
         left_image_raw = cv2.resize(
             left_image_raw,
-            (int(left_image_raw.shape[1] * scale), int(left_image_raw.shape[0] * scale)),
+            (
+                int(left_image_raw.shape[1] * scale),
+                int(left_image_raw.shape[0] * scale),
+            ),
             interpolation=cv2.INTER_CUBIC,
         )
     # upscale image if subpixel calculation is enabled
