@@ -33,7 +33,7 @@
 #    - LinAlgError ? Image dimensions should be even numbers?
 #       related: https://stackoverflow.com/questions/44305456/why-am-i-getting-linalgerror-singular-matrix-from-grangercausalitytests
 #         File "batchautomorph.py", line 151, in interpolate_points
-#           righth = np.linalg.solve(tempRightMatrix, targetVertices)
+#           righth = np.linalg.solve(temp_right_matrix, target_vertices)
 #         File "<__array_function__ internals>", line 5, in solve
 #         File "numpy\linalg\linalg.py",
 #           line 403, in solve
@@ -160,12 +160,12 @@ class Morpher:
         return blendARR
 
     def interpolate_points(self, left_triangle, right_triangle, alpha):
-        targetTriangle = Triangle(
+        target_triangle = Triangle(
             left_triangle.vertices
             + (right_triangle.vertices - left_triangle.vertices) * alpha
         )
-        targetVertices = targetTriangle.vertices.reshape(6, 1)
-        tempLeftMatrix = np.array(
+        target_vertices = target_triangle.vertices.reshape(6, 1)
+        temp_left_matrix = np.array(
             [
                 [left_triangle.vertices[0][0], left_triangle.vertices[0][1], 1, 0, 0, 0],
                 [0, 0, 0, left_triangle.vertices[0][0], left_triangle.vertices[0][1], 1],
@@ -175,7 +175,7 @@ class Morpher:
                 [0, 0, 0, left_triangle.vertices[2][0], left_triangle.vertices[2][1], 1],
             ]
         )
-        tempRightMatrix = np.array(
+        temp_right_matrix = np.array(
             [
                 [
                     right_triangle.vertices[0][0],
@@ -227,8 +227,8 @@ class Morpher:
                 ],
             ]
         )
-        lefth = np.linalg.solve(tempLeftMatrix, targetVertices)
-        righth = np.linalg.solve(tempRightMatrix, targetVertices)
+        lefth = np.linalg.solve(temp_left_matrix, target_vertices)
+        righth = np.linalg.solve(temp_right_matrix, target_vertices)
         leftH = np.array(
             [
                 [lefth[0][0], lefth[1][0], lefth[2][0]],
@@ -245,7 +245,7 @@ class Morpher:
         )
         leftinvh = np.linalg.inv(leftH)
         rightinvh = np.linalg.inv(righth)
-        target_points = targetTriangle.get_points()  # TODO: ~ 17-18% of runtime
+        target_points = target_triangle.get_points()  # TODO: ~ 17-18% of runtime
 
         left_source_points = np.transpose(np.matmul(leftinvh, target_points))
         right_source_points = np.transpose(np.matmul(rightinvh, target_points))
@@ -339,20 +339,20 @@ def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures,
         )
 
     # right image load
-    rightImageRaw = cv2.imread(endingpath)
+    right_image_raw = cv2.imread(endingpath)
     # resize image
-    rightImageRaw = cv2.resize(
-        rightImageRaw,
+    right_image_raw = cv2.resize(
+        right_image_raw,
         (left_image_raw.shape[1], left_image_raw.shape[0]),
         interpolation=cv2.INTER_CUBIC,
     )
 
     left_image_arr = np.asarray(left_image_raw)
-    right_image_arr = np.asarray(rightImageRaw)
+    right_image_arr = np.asarray(right_image_raw)
 
     # autofeaturepoints() is called in load_triangles()
     triangle_tuple = load_triangles(
-        left_image_raw, rightImageRaw, featuregridsize, showfeatures
+        left_image_raw, right_image_raw, featuregridsize, showfeatures
     )
 
     # Morpher objects for color layers BGR
