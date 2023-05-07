@@ -150,7 +150,7 @@ class Morpher:
             self.rightImage,
         )  # , kx=2, ky=2)
 
-    def getImageAtAlpha(self, alpha, smoothMode):
+    def get_image_at_alpha(self, alpha, smoothMode):
         for left_triangle, right_triangle in zip(self.left_triangles, self.right_triangles):
             self.interpolate_points(left_triangle, right_triangle, alpha)
             # print(".", end="") # TODO: this doesn't work as intended
@@ -406,22 +406,22 @@ def morphprocess(mphs, framerate, outimgprefix, subpixel, smoothing):
             outimage = np.dstack(
                 [
                     np.array(
-                        median_filter(mphs[0].getImageAtAlpha(alfa, True), smoothing)
+                        median_filter(mphs[0].get_image_at_alpha(alfa, True), smoothing)
                     ),
                     np.array(
-                        median_filter(mphs[1].getImageAtAlpha(alfa, True), smoothing)
+                        median_filter(mphs[1].get_image_at_alpha(alfa, True), smoothing)
                     ),
                     np.array(
-                        median_filter(mphs[2].getImageAtAlpha(alfa, True), smoothing)
+                        median_filter(mphs[2].get_image_at_alpha(alfa, True), smoothing)
                     ),
                 ]
             )
         else:
             outimage = np.dstack(
                 [
-                    np.array(mphs[0].getImageAtAlpha(alfa, True)),
-                    np.array(mphs[1].getImageAtAlpha(alfa, True)),
-                    np.array(mphs[2].getImageAtAlpha(alfa, True)),
+                    np.array(mphs[0].get_image_at_alpha(alfa, True)),
+                    np.array(mphs[1].get_image_at_alpha(alfa, True)),
+                    np.array(mphs[2].get_image_at_alpha(alfa, True)),
                 ]
             )
 
