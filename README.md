@@ -42,6 +42,10 @@ This is how the logo ```f.gif``` was created:
 
 ```python autoimagemorph.py -inframes "['f0.png','f30.png','f60.png','f90.png','f120.png','f150.png','f0.png']" -outprefix f -framerate 30 -subpixel 4```
 
+or
+
+```python tests/test_autoimagemorphGPT.py  -inframes "['f0.png','f30.png','f60.png','f90.png','f120.png','f150.png','f0.png']" -outprefix f -framerate 30 -subpixel 4```
+
 3. FFmpeg postprocessing:
 
 ```ffmpeg -framerate 15 -i f%d.png f.gif```
