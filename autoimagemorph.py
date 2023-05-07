@@ -75,26 +75,26 @@ class Triangle:
         if vertices.dtype != np.float64:
             raise ValueError("Input argument is not of type float64.")
         self.vertices = vertices
-        self.minX = int(self.vertices[:, 0].min())
-        self.maxX = int(self.vertices[:, 0].max())
-        self.minY = int(self.vertices[:, 1].min())
-        self.maxY = int(self.vertices[:, 1].max())
+        self.min_x = int(self.vertices[:, 0].min())
+        self.max_x = int(self.vertices[:, 0].max())
+        self.min_y = int(self.vertices[:, 1].min())
+        self.max_y = int(self.vertices[:, 1].max())
 
     def get_points(self):
-        xList = range(self.minX, self.maxX + 1)
-        yList = range(self.minY, self.maxY + 1)
-        emptyList = list((x, y) for x in xList for y in yList)
+        xList = range(self.min_x, self.max_x + 1)
+        yList = range(self.min_y, self.max_y + 1)
+        empty_list = list((x, y) for x in xList for y in yList)
 
-        points = np.array(emptyList, np.float64)
+        points = np.array(empty_list, np.float64)
         p = Path(self.vertices)
         grid = p.contains_points(points)
-        mask = grid.reshape(self.maxX - self.minX + 1, self.maxY - self.minY + 1)
+        mask = grid.reshape(self.max_x - self.min_x + 1, self.max_y - self.min_y + 1)
 
         trueArray = np.where(np.array(mask) == True)
         coordArray = np.vstack(
             (
-                trueArray[0] + self.minX,
-                trueArray[1] + self.minY,
+                trueArray[0] + self.min_x,
+                trueArray[1] + self.min_y,
                 np.ones(trueArray[0].shape[0]),
             )
         )
@@ -103,15 +103,15 @@ class Triangle:
 
 
 class Morpher:
-    def __init__(self, leftImage, left_triangles, rightImage, right_triangles):
-        if type(leftImage) != np.ndarray:
-            raise TypeError("Input leftImage is not an np.ndarray")
-        if leftImage.dtype != np.uint8:
-            raise TypeError("Input leftImage is not of type np.uint8")
-        if type(rightImage) != np.ndarray:
-            raise TypeError("Input rightImage is not an np.ndarray")
-        if rightImage.dtype != np.uint8:
-            raise TypeError("Input rightImage is not of type np.uint8")
+    def __init__(self, left_image, left_triangles, right_image, right_triangles):
+        if type(left_image) != np.ndarray:
+            raise TypeError("Input left_image is not an np.ndarray")
+        if left_image.dtype != np.uint8:
+            raise TypeError("Input left_image is not of type np.uint8")
+        if type(right_image) != np.ndarray:
+            raise TypeError("Input right_image is not an np.ndarray")
+        if right_image.dtype != np.uint8:
+            raise TypeError("Input right_image is not of type np.uint8")
         if type(left_triangles) != list:
             raise TypeError("Input left_triangles is not of type List")
         for j in left_triangles:
@@ -126,19 +126,19 @@ class Morpher:
                 raise TypeError(
                     "Element of input right_triangles is not of Class Triangle"
                 )
-        self.leftImage = np.ndarray.copy(leftImage)
+        self.left_image = np.ndarray.copy(left_image)
         self.left_triangles = left_triangles  # Not of type np.uint8
-        self.rightImage = np.ndarray.copy(rightImage)
+        self.right_image = np.ndarray.copy(right_image)
         self.right_triangles = right_triangles  # Not of type np.uint8
         self.left_interpolation = RectBivariateSpline(
-            np.arange(self.leftImage.shape[0]),
-            np.arange(self.leftImage.shape[1]),
-            self.leftImage,
+            np.arange(self.left_image.shape[0]),
+            np.arange(self.left_image.shape[1]),
+            self.left_image,
         )  # , kx=2, ky=2)
         self.right_interpolation = RectBivariateSpline(
-            np.arange(self.rightImage.shape[0]),
-            np.arange(self.rightImage.shape[1]),
-            self.rightImage,
+            np.arange(self.right_image.shape[0]),
+            np.arange(self.right_image.shape[1]),
+            self.right_image,
         )  # , kx=2, ky=2)
 
     def get_image_at_alpha(self, alpha, smoothMode):
@@ -146,9 +146,9 @@ class Morpher:
             self.interpolate_points(left_triangle, right_triangle, alpha)
             # print(".", end="") # TODO: this doesn't work as intended
 
-        blendARR = (1 - alpha) * self.leftImage + alpha * self.rightImage
-        blendARR = blendARR.astype(np.uint8)
-        return blendARR
+        blend_arr = (1 - alpha) * self.left_image + alpha * self.right_image
+        blend_arr = blend_arr.astype(np.uint8)
+        return blend_arr
 
     def interpolate_points(self, left_triangle, right_triangle, alpha):
         target_triangle = Triangle(
@@ -245,8 +245,8 @@ class Morpher:
         for x, y, z in zip(
             target_points, left_source_points, right_source_points
         ):  # TODO: ~ 53% of runtime
-            self.leftImage[int(x[1])][int(x[0])] = self.left_interpolation(y[1], y[0])
-            self.rightImage[int(x[1])][int(x[0])] = self.right_interpolation(z[1], z[0])
+            self.left_image[int(x[1])][int(x[0])] = self.left_interpolation(y[1], y[0])
+            self.right_image[int(x[1])][int(x[0])] = self.right_interpolation(z[1], z[0])
 
 
 ########################################################################################################
