@@ -25,14 +25,14 @@
 #
 #   TODOs:
 #    - testing, error checks, sanity checks
-#    - speed optimization in interpolatePoints()
+#    - speed optimization in interpolate_points()
 #    - RGBA support, currently it's only RGB
 #    - tuning the parameters of cv2.goodFeaturesToTrack() in autofeaturepoints() / giving user control
 #    - built-in video output with cv2 ?
 #    - image scaling uses cv2.INTER_CUBIC ; tuning / giving user control ?
 #    - LinAlgError ? Image dimensions should be even numbers?
 #       related: https://stackoverflow.com/questions/44305456/why-am-i-getting-linalgerror-singular-matrix-from-grangercausalitytests
-#         File "batchautomorph.py", line 151, in interpolatePoints
+#         File "batchautomorph.py", line 151, in interpolate_points
 #           righth = np.linalg.solve(tempRightMatrix, targetVertices)
 #         File "<__array_function__ internals>", line 5, in solve
 #         File "numpy\linalg\linalg.py",
@@ -112,7 +112,7 @@ class Triangle:
 
 
 class Morpher:
-    def __init__(self, leftImage, leftTriangles, rightImage, rightTriangles):
+    def __init__(self, leftImage, left_triangles, rightImage, right_triangles):
         if type(leftImage) != np.ndarray:
             raise TypeError("Input leftImage is not an np.ndarray")
         if leftImage.dtype != np.uint8:
@@ -121,65 +121,65 @@ class Morpher:
             raise TypeError("Input rightImage is not an np.ndarray")
         if rightImage.dtype != np.uint8:
             raise TypeError("Input rightImage is not of type np.uint8")
-        if type(leftTriangles) != list:
-            raise TypeError("Input leftTriangles is not of type List")
-        for j in leftTriangles:
+        if type(left_triangles) != list:
+            raise TypeError("Input left_triangles is not of type List")
+        for j in left_triangles:
             if isinstance(j, Triangle) == 0:
                 raise TypeError(
-                    "Element of input leftTriangles is not of Class Triangle"
+                    "Element of input left_triangles is not of Class Triangle"
                 )
-        if type(rightTriangles) != list:
-            raise TypeError("Input leftTriangles is not of type List")
-        for k in rightTriangles:
+        if type(right_triangles) != list:
+            raise TypeError("Input left_triangles is not of type List")
+        for k in right_triangles:
             if isinstance(k, Triangle) == 0:
                 raise TypeError(
-                    "Element of input rightTriangles is not of Class Triangle"
+                    "Element of input right_triangles is not of Class Triangle"
                 )
         self.leftImage = np.ndarray.copy(leftImage)
-        self.leftTriangles = leftTriangles  # Not of type np.uint8
+        self.left_triangles = left_triangles  # Not of type np.uint8
         self.rightImage = np.ndarray.copy(rightImage)
-        self.rightTriangles = rightTriangles  # Not of type np.uint8
-        self.leftInterpolation = RectBivariateSpline(
+        self.right_triangles = right_triangles  # Not of type np.uint8
+        self.left_interpolation = RectBivariateSpline(
             np.arange(self.leftImage.shape[0]),
             np.arange(self.leftImage.shape[1]),
             self.leftImage,
         )  # , kx=2, ky=2)
-        self.rightInterpolation = RectBivariateSpline(
+        self.right_interpolation = RectBivariateSpline(
             np.arange(self.rightImage.shape[0]),
             np.arange(self.rightImage.shape[1]),
             self.rightImage,
         )  # , kx=2, ky=2)
 
     def getImageAtAlpha(self, alpha, smoothMode):
-        for leftTriangle, rightTriangle in zip(self.leftTriangles, self.rightTriangles):
-            self.interpolatePoints(leftTriangle, rightTriangle, alpha)
+        for left_triangle, right_triangle in zip(self.left_triangles, self.right_triangles):
+            self.interpolate_points(left_triangle, right_triangle, alpha)
             # print(".", end="") # TODO: this doesn't work as intended
 
         blendARR = (1 - alpha) * self.leftImage + alpha * self.rightImage
         blendARR = blendARR.astype(np.uint8)
         return blendARR
 
-    def interpolatePoints(self, leftTriangle, rightTriangle, alpha):
+    def interpolate_points(self, left_triangle, right_triangle, alpha):
         targetTriangle = Triangle(
-            leftTriangle.vertices
-            + (rightTriangle.vertices - leftTriangle.vertices) * alpha
+            left_triangle.vertices
+            + (right_triangle.vertices - left_triangle.vertices) * alpha
         )
         targetVertices = targetTriangle.vertices.reshape(6, 1)
         tempLeftMatrix = np.array(
             [
-                [leftTriangle.vertices[0][0], leftTriangle.vertices[0][1], 1, 0, 0, 0],
-                [0, 0, 0, leftTriangle.vertices[0][0], leftTriangle.vertices[0][1], 1],
-                [leftTriangle.vertices[1][0], leftTriangle.vertices[1][1], 1, 0, 0, 0],
-                [0, 0, 0, leftTriangle.vertices[1][0], leftTriangle.vertices[1][1], 1],
-                [leftTriangle.vertices[2][0], leftTriangle.vertices[2][1], 1, 0, 0, 0],
-                [0, 0, 0, leftTriangle.vertices[2][0], leftTriangle.vertices[2][1], 1],
+                [left_triangle.vertices[0][0], left_triangle.vertices[0][1], 1, 0, 0, 0],
+                [0, 0, 0, left_triangle.vertices[0][0], left_triangle.vertices[0][1], 1],
+                [left_triangle.vertices[1][0], left_triangle.vertices[1][1], 1, 0, 0, 0],
+                [0, 0, 0, left_triangle.vertices[1][0], left_triangle.vertices[1][1], 1],
+                [left_triangle.vertices[2][0], left_triangle.vertices[2][1], 1, 0, 0, 0],
+                [0, 0, 0, left_triangle.vertices[2][0], left_triangle.vertices[2][1], 1],
             ]
         )
         tempRightMatrix = np.array(
             [
                 [
-                    rightTriangle.vertices[0][0],
-                    rightTriangle.vertices[0][1],
+                    right_triangle.vertices[0][0],
+                    right_triangle.vertices[0][1],
                     1,
                     0,
                     0,
@@ -189,29 +189,13 @@ class Morpher:
                     0,
                     0,
                     0,
-                    rightTriangle.vertices[0][0],
-                    rightTriangle.vertices[0][1],
+                    right_triangle.vertices[0][0],
+                    right_triangle.vertices[0][1],
                     1,
                 ],
                 [
-                    rightTriangle.vertices[1][0],
-                    rightTriangle.vertices[1][1],
-                    1,
-                    0,
-                    0,
-                    0,
-                ],
-                [
-                    0,
-                    0,
-                    0,
-                    rightTriangle.vertices[1][0],
-                    rightTriangle.vertices[1][1],
-                    1,
-                ],
-                [
-                    rightTriangle.vertices[2][0],
-                    rightTriangle.vertices[2][1],
+                    right_triangle.vertices[1][0],
+                    right_triangle.vertices[1][1],
                     1,
                     0,
                     0,
@@ -221,8 +205,24 @@ class Morpher:
                     0,
                     0,
                     0,
-                    rightTriangle.vertices[2][0],
-                    rightTriangle.vertices[2][1],
+                    right_triangle.vertices[1][0],
+                    right_triangle.vertices[1][1],
+                    1,
+                ],
+                [
+                    right_triangle.vertices[2][0],
+                    right_triangle.vertices[2][1],
+                    1,
+                    0,
+                    0,
+                    0,
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    right_triangle.vertices[2][0],
+                    right_triangle.vertices[2][1],
                     1,
                 ],
             ]
@@ -254,8 +254,8 @@ class Morpher:
         for x, y, z in zip(
             target_points, left_source_points, right_source_points
         ):  # TODO: ~ 53% of runtime
-            self.leftImage[int(x[1])][int(x[0])] = self.leftInterpolation(y[1], y[0])
-            self.rightImage[int(x[1])][int(x[0])] = self.rightInterpolation(z[1], z[0])
+            self.leftImage[int(x[1])][int(x[0])] = self.left_interpolation(y[1], y[0])
+            self.rightImage[int(x[1])][int(x[0])] = self.right_interpolation(z[1], z[0])
 
 
 ########################################################################################################
@@ -322,19 +322,19 @@ def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures,
     # left image load
     print("startimgpath", startimgpath)
     print("endingpath", endingpath)
-    leftImageRaw = cv2.imread(startimgpath)
+    left_image_raw = cv2.imread(startimgpath)
     # scale image if custom scaling
     if scale != 1.0:
-        leftImageRaw = cv2.resize(
-            leftImageRaw,
-            (int(leftImageRaw.shape[1] * scale), int(leftImageRaw.shape[0] * scale)),
+        left_image_raw = cv2.resize(
+            left_image_raw,
+            (int(left_image_raw.shape[1] * scale), int(left_image_raw.shape[0] * scale)),
             interpolation=cv2.INTER_CUBIC,
         )
     # upscale image if subpixel calculation is enabled
     if subpixel > 1:
-        leftImageRaw = cv2.resize(
-            leftImageRaw,
-            (leftImageRaw.shape[1] * subpixel, leftImageRaw.shape[0] * subpixel),
+        left_image_raw = cv2.resize(
+            left_image_raw,
+            (left_image_raw.shape[1] * subpixel, left_image_raw.shape[0] * subpixel),
             interpolation=cv2.INTER_CUBIC,
         )
 
@@ -343,37 +343,37 @@ def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures,
     # resize image
     rightImageRaw = cv2.resize(
         rightImageRaw,
-        (leftImageRaw.shape[1], leftImageRaw.shape[0]),
+        (left_image_raw.shape[1], left_image_raw.shape[0]),
         interpolation=cv2.INTER_CUBIC,
     )
 
-    leftImageARR = np.asarray(leftImageRaw)
-    rightImageARR = np.asarray(rightImageRaw)
+    left_image_arr = np.asarray(left_image_raw)
+    right_image_arr = np.asarray(rightImageRaw)
 
     # autofeaturepoints() is called in load_triangles()
-    triangleTuple = load_triangles(
-        leftImageRaw, rightImageRaw, featuregridsize, showfeatures
+    triangle_tuple = load_triangles(
+        left_image_raw, rightImageRaw, featuregridsize, showfeatures
     )
 
     # Morpher objects for color layers BGR
     morphers = [
         Morpher(
-            leftImageARR[:, :, 0],
-            triangleTuple[0],
-            rightImageARR[:, :, 0],
-            triangleTuple[1],
+            left_image_arr[:, :, 0],
+            triangle_tuple[0],
+            right_image_arr[:, :, 0],
+            triangle_tuple[1],
         ),
         Morpher(
-            leftImageARR[:, :, 1],
-            triangleTuple[0],
-            rightImageARR[:, :, 1],
-            triangleTuple[1],
+            left_image_arr[:, :, 1],
+            triangle_tuple[0],
+            right_image_arr[:, :, 1],
+            triangle_tuple[1],
         ),
         Morpher(
-            leftImageARR[:, :, 2],
-            triangleTuple[0],
-            rightImageARR[:, :, 2],
-            triangleTuple[1],
+            left_image_arr[:, :, 2],
+            triangle_tuple[0],
+            right_image_arr[:, :, 2],
+            triangle_tuple[1],
         ),
     ]
 
