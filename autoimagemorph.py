@@ -52,12 +52,6 @@ from scipy.interpolate import RectBivariateSpline
 from matplotlib.path import Path
 import numpy as np
 
-#######################################################
-#   https://github.com/ddowd97/Morphing
-#   Author:     David Dowd
-#   Email:      ddowd97@gmail.com
-#######################################################
-
 image_dir = "/Users/ishandutta2007/Documents/Projects/autoimagemorphGPT/images"
 
 
