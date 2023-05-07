@@ -58,6 +58,8 @@ import numpy as np
 #   Email:      ddowd97@gmail.com
 #######################################################
 
+image_dir = "/Users/ishandutta2007/Documents/Projects/autoimagemorphGPT/images"
+
 def loadTriangles(limg, rimg, featuregridsize, showfeatures) -> tuple:
     leftTriList = []
     rightTriList = []
@@ -227,6 +229,8 @@ def initmorph(startimgpath,endimgpath,featuregridsize,subpixel,showfeatures,scal
     timerstart = time.time()
             
     # left image load
+    print("startimgpath", startimgpath)
+    print("endimgpath", endimgpath)
     leftImageRaw = cv2.imread(startimgpath)
     # scale image if custom scaling
     if scale != 1.0 :
@@ -292,7 +296,7 @@ def morphprocess(mphs,framerate,outimgprefix,subpixel,smoothing) :
         # write file
         filename = outimgprefix+str(framecnt)+".png"
         framecnt = framecnt + 1
-        cv2.imwrite(filename,outimage)
+        cv2.imwrite(image_dir + "/" + filename, outimage)
         timerelapsed = time.time()-timerstart
         usppx = 1000000 * timerelapsed / (outimage.shape[0]*outimage.shape[1])
         print(filename+" saved, dimensions "+str(outimage.shape)+" time: "+"{0:.2f}".format(timerelapsed)+" s ; μs/pixel: "+"{0:.2f}".format(usppx) )
@@ -303,9 +307,10 @@ def batchmorph(imgs,featuregridsize,subpixel,showfeatures,framerate,outimgprefix
     global framecnt
     framecnt = 0
     totaltimerstart = time.time()
+
     for idx in range(len(imgs)-1) :
         morphprocess(
-            initmorph(imgs[idx],imgs[idx+1],featuregridsize,subpixel,showfeatures,scale),
+            initmorph(image_dir + "/" + imgs[idx], image_dir + "/" + imgs[idx+1],featuregridsize,subpixel,showfeatures,scale),
             framerate,outimgprefix,subpixel,smoothing
         )
     print("\r\nDone. Total time: "+str(time.time()-totaltimerstart)+" s ")
@@ -349,6 +354,7 @@ if( len(args['outprefix']) < 1 ) :
     print("ERROR: -outprefix (output filename prefix) must be specified.")
     print("Example\r\n > python autoimagemorph.py -inframes ['frame0.png','frame30.png','frame60.png'] -outprefix frame ")
     quit()
+print(args['inframes'])
 args['inframes'] = ast.literal_eval(args['inframes'])
 
 args['featuregridsize'] = int(args['featuregridsize'])
