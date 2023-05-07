@@ -236,23 +236,23 @@ class Morpher:
                 [0, 0, 1],
             ]
         )
-        rightH = np.array(
+        righth = np.array(
             [
                 [righth[0][0], righth[1][0], righth[2][0]],
                 [righth[3][0], righth[4][0], righth[5][0]],
                 [0, 0, 1],
             ]
         )
-        leftinvH = np.linalg.inv(leftH)
-        rightinvH = np.linalg.inv(rightH)
+        leftinvh = np.linalg.inv(leftH)
+        rightinvh = np.linalg.inv(righth)
         target_points = targetTriangle.get_points()  # TODO: ~ 17-18% of runtime
 
-        leftSourcePoints = np.transpose(np.matmul(leftinvH, target_points))
-        rightSourcePoints = np.transpose(np.matmul(rightinvH, target_points))
+        left_source_points = np.transpose(np.matmul(leftinvh, target_points))
+        right_source_points = np.transpose(np.matmul(rightinvh, target_points))
         target_points = np.transpose(target_points)
 
         for x, y, z in zip(
-            target_points, leftSourcePoints, rightSourcePoints
+            target_points, left_source_points, right_source_points
         ):  # TODO: ~ 53% of runtime
             self.leftImage[int(x[1])][int(x[0])] = self.leftInterpolation(y[1], y[0])
             self.rightImage[int(x[1])][int(x[0])] = self.rightInterpolation(z[1], z[0])
