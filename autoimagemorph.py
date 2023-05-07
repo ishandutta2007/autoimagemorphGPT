@@ -322,12 +322,12 @@ def autofeaturepoints(leimg, riimg, featuregridsize, showfeatures):
 #####
 
 
-def initmorph(startimgpath, endimgpath, featuregridsize, subpixel, showfeatures, scale):
+def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures, scale):
     timerstart = time.time()
 
     # left image load
     print("startimgpath", startimgpath)
-    print("endimgpath", endimgpath)
+    print("endingpath", endingpath)
     leftImageRaw = cv2.imread(startimgpath)
     # scale image if custom scaling
     if scale != 1.0:
@@ -345,7 +345,7 @@ def initmorph(startimgpath, endimgpath, featuregridsize, subpixel, showfeatures,
         )
 
     # right image load
-    rightImageRaw = cv2.imread(endimgpath)
+    rightImageRaw = cv2.imread(endingpath)
     # resize image
     rightImageRaw = cv2.resize(
         rightImageRaw,
