@@ -35,6 +35,7 @@
 #           numpy.linalg.LinAlgError: Singular matrix
 
 def run_autoimagemorphGPT():
+    print("Yo")
     import cv2, time, argparse, ast
     from scipy.ndimage import median_filter
     from scipy.spatial import Delaunay
@@ -597,14 +598,14 @@ def run_autoimagemorphGPT():
             "ERROR: command line argument -inframes must be a string array with minimum 2 elements."
         )
         print(
-            "Example\r\n > python autoimagemorph.py -inframes ['frame0.png','frame30.png','frame60.png'] -outprefix frame "
+            "Example\r\n > python autoimagemorphGPT/autoimagemorphGPT.py -inframes ['frame0.png','frame30.png','frame60.png'] -outprefix frame "
         )
         quit()
 
     if len(args["outprefix"]) < 1:
         print("ERROR: -outprefix (output filename prefix) must be specified.")
         print(
-            "Example\r\n > python autoimagemorph.py -inframes ['frame0.png','frame30.png','frame60.png'] -outprefix frame "
+            "Example\r\n > python autoimagemorphGPT/autoimagemorphGPT.py -inframes ['frame0.png','frame30.png','frame60.png'] -outprefix frame "
         )
         quit()
     print(args["inframes"])

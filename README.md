@@ -9,7 +9,7 @@
 ## This is adapted from Python Image Morpher (PIM) by David Dowd. https://github.com/ddowd97/Morphing and then automated by András Jankovics https://github.com/jankovicsandras/autoimagemorph
 
 David's Python Image Morpher (PIM) is a great tool with a nice GUI. You should use it when you want to select the morph-points manually. This leads to much better results, at the expense of manual work.
-```autoimagemorph.py``` selects the morph-points automatically using OpenCV ```cv2.goodFeaturesToTrack()``` . 
+```autoimagemorphGPT/autoimagemorphGPT.py``` selects the morph-points automatically using OpenCV ```cv2.goodFeaturesToTrack()``` . 
 András Jankovics's automation is great but you would still have to serach internet and download images.
 We want to automate end just by giving a prompt
 
@@ -17,6 +17,9 @@ We want to automate end just by giving a prompt
 ## Installation
 
 ```
+rm -rf build
+rm -rf dist
+rm -rf autoimagemorphGPT.egg-info
 pip install setuptools
 pip install wheel
 python setup.py sdist bdist_wheel
@@ -36,12 +39,12 @@ Be careful when using the required ```-outprefix``` parameter.  The program over
 ## Examples
 Help:
 
-```python autoimagemorph.py -h```
+```python autoimagemorphGPT/autoimagemorphGPT.py -h```
 
 ----
 This will create and save ```f1.png```, ```f2.png```, ... ```f29.png```, then ```f31.png```, ```f32.png```, ... ```f59.png``` creating a continuous image sequence between the keyframes. The keyframes ```f0.png```, ```f30.png``` and ```f60.png``` will not be modified (overwritten), but only if the framerate matches their filename.
 
-```python autoimagemorph.py -inframes "['f0.png','f30.png','f60.png']" -outprefix f -framerate 30```
+```python autoimagemorphGPT/autoimagemorphGPT.py -inframes "['f0.png','f30.png','f60.png']" -outprefix f -framerate 30```
 
 ----
 This is how the logo ```f.gif``` was created:
@@ -50,7 +53,7 @@ This is how the logo ```f.gif``` was created:
 
 2. Ran this and took a nap. :)  The process took more than an hour.
 
-```python autoimagemorph.py -inframes "['f0.png','f30.png','f60.png','f90.png','f120.png','f150.png','f0.png']" -outprefix f -framerate 30 -subpixel 4```
+```python autoimagemorphGPT/autoimagemorphGPT.py -inframes "['f0.png','f30.png','f60.png','f90.png','f120.png','f150.png','f0.png']" -outprefix f -framerate 30 -subpixel 4```
 
 or
 
