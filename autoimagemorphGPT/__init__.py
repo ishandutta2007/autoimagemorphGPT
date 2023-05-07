@@ -1,2 +1,2 @@
-from mypackage.autoimagemorph import *
+from autoimagemorphGPT.autoimagemorphGPT import *
 

@@ -13,6 +13,16 @@ David's Python Image Morpher (PIM) is a great tool with a nice GUI. You should u
 András Jankovics's automation is great but you would still have to serach internet and download images.
 We want to automate end just by giving a prompt
 
+
+## Installation
+
+```
+pip install setuptools
+pip install wheel
+python setup.py sdist bdist_wheel
+pip install dist/autoimagemorphGPT-1.0.0.tar.gz 
+```
+
 ## Additional features:
 - automatic triangle points selection using ```cv2.goodFeaturesToTrack()```
 - No GUI, single file command line program

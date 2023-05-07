@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='mypackage',
+    name='autoimagemorphGPT',
     version='1.0.0',
     description='A sample Python package',
-    author='Your Name',
-    author_email='you@example.com',
-    url='https://github.com/yourusername/mypackage',
+    author='Ishan Dutta',
+    author_email='ishandutta2007@gmail.com',
+    url='https://github.com/ishandutta2007/autoimagemorphGPT',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
