@@ -1,0 +1,2 @@
+from mypackage.autoimagemorph import *
+
