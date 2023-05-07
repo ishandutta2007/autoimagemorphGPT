@@ -89,7 +89,7 @@ class Triangle:
         self.minY = int(self.vertices[:, 1].min())
         self.maxY = int(self.vertices[:, 1].max())
 
-    def getPoints(self):
+    def get_points(self):
         xList = range(self.minX, self.maxX + 1)
         yList = range(self.minY, self.maxY + 1)
         emptyList = list((x, y) for x in xList for y in yList)
@@ -245,14 +245,14 @@ class Morpher:
         )
         leftinvH = np.linalg.inv(leftH)
         rightinvH = np.linalg.inv(rightH)
-        targetPoints = targetTriangle.getPoints()  # TODO: ~ 17-18% of runtime
+        target_points = targetTriangle.get_points()  # TODO: ~ 17-18% of runtime
 
-        leftSourcePoints = np.transpose(np.matmul(leftinvH, targetPoints))
-        rightSourcePoints = np.transpose(np.matmul(rightinvH, targetPoints))
-        targetPoints = np.transpose(targetPoints)
+        leftSourcePoints = np.transpose(np.matmul(leftinvH, target_points))
+        rightSourcePoints = np.transpose(np.matmul(rightinvH, target_points))
+        target_points = np.transpose(target_points)
 
         for x, y, z in zip(
-            targetPoints, leftSourcePoints, rightSourcePoints
+            target_points, leftSourcePoints, rightSourcePoints
         ):  # TODO: ~ 53% of runtime
             self.leftImage[int(x[1])][int(x[0])] = self.leftInterpolation(y[1], y[0])
             self.rightImage[int(x[1])][int(x[0])] = self.rightInterpolation(z[1], z[0])
