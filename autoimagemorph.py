@@ -1,12 +1,3 @@
-#######################################################
-#
-#   Automatic Image Morphing
-#   András Jankovics andras@jankovics.net , 2020, adapted from
-#
-#   https://github.com/ddowd97/Morphing
-#   Author:     David Dowd
-#   Email:      ddowd97@gmail.com
-#
 #   Additional features :
 #    - automatic triangle points selection by cv2.goodFeaturesToTrack()
 #    - No GUI, single file program
