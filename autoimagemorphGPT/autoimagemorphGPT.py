@@ -5,9 +5,6 @@
 #    - optional subpixel processing to fix image artifacts
 #    - automatic image dimensions safety (the dimensions of the first image defines the output)
 #
-#   Install dependencies:
-#    pip install scipy numpy matplotlib opencv-python
-#
 #   Recommended postprocessing:
 #    Install FFmpeg https://ffmpeg.org/
 #    Example from command line:
@@ -346,9 +343,6 @@ def run_autoimagemorphGPT():
         return result
 
 
-    #####
-
-
     def initmorph(startimgpath, endingpath, featuregridsize, subpixel, showfeatures, scale):
         timerstart = time.time()
 
@@ -422,9 +416,6 @@ def run_autoimagemorphGPT():
         return morphers
 
 
-    ####
-
-
     def morphprocess(mphs, framerate, outimgprefix, subpixel, smoothing):
         global framecnt
 
@@ -486,9 +477,6 @@ def run_autoimagemorphGPT():
             )
 
 
-    ####
-
-
     def batchmorph(
         imgs,
         featuregridsize,
@@ -520,8 +508,6 @@ def run_autoimagemorphGPT():
             )
         print("\r\nDone. Total time: " + str(time.time() - totaltimerstart) + " s ")
 
-
-    ###############################################################################
 
     mfeaturegridsize = 7  # number of image divisions on each axis, for example 5 creates 5x5 = 25 automatic feature points + 4 corners come automatically
     mframerate = 30  # number of transition frames to render + 1 ; for example 30 renders transiton frames 1..29
