@@ -6,9 +6,12 @@
 ### Version 1.0.0
 ### This is a Python command line application.
 
-## This is adapted from Python Image Morpher (PIM) by David Dowd. https://github.com/ddowd97/Morphing
+## This is adapted from Python Image Morpher (PIM) by David Dowd. https://github.com/ddowd97/Morphing and then automated by András Jankovics https://github.com/jankovicsandras/autoimagemorph
+
 David's Python Image Morpher (PIM) is a great tool with a nice GUI. You should use it when you want to select the morph-points manually. This leads to much better results, at the expense of manual work.
-```autoimagemorph.py``` selects the morph-points automatically using OpenCV ```cv2.goodFeaturesToTrack()``` . No manual work required, starting the command will generate and save the image sequence (animation frames).
+```autoimagemorph.py``` selects the morph-points automatically using OpenCV ```cv2.goodFeaturesToTrack()``` . 
+András Jankovics's automation is great but you would still have to serach internet and download images.
+We want to automate end just by giving a prompt
 
 ## Additional features:
 - automatic triangle points selection using ```cv2.goodFeaturesToTrack()```
