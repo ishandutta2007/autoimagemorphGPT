@@ -26,7 +26,9 @@ python setup.py sdist bdist_wheel
 pip install dist/autoimagemorphGPT-1.0.0.tar.gz 
 ```
 
-.
+## Project Structure
+
+```
 ├── LICENSE
 ├── README.md
 ├── autoimagemorphGPT
@@ -46,6 +48,7 @@ pip install dist/autoimagemorphGPT-1.0.0.tar.gz
 ├── setup.py
 └── tests
     └── test_autoimagemorphGPT.py
+```
 
 ## Additional features:
 - automatic triangle points selection using ```cv2.goodFeaturesToTrack()```
