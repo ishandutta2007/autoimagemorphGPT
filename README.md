@@ -51,6 +51,11 @@ pip install dist/autoimagemorphGPT-1.0.0.tar.gz
     └── test_autoimagemorphGPT.py
 ```
 
+## Documentation:
+
+[autoimagemorphgpt.readthedocs.io](https://autoimagemorphgpt.readthedocs.io/en/latest/)
+
+
 ## Additional features:
 - automatic triangle points selection using ```cv2.goodFeaturesToTrack()```
 - No GUI, single file command line program
