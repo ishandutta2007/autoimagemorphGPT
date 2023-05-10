@@ -13,5 +13,5 @@ opencv_python == 4.5.1.48
 scipy == 1.7.0
 
 # due to failing on 3.7
-# urllib3>=1.25.11
-urllib3>=1.26.3
+urllib3>=1.25.11
+# urllib3>=1.26.3
